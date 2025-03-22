@@ -1,0 +1,29 @@
+package org.notetaking.markdownnotetakingapi.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "files")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class FileEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(nullable = false)
+    private String fileName;
+
+    @Column(nullable = false)
+    private String fileType;
+
+    @Lob
+    @Column(nullable = false)
+    private byte[] fileData;
+}

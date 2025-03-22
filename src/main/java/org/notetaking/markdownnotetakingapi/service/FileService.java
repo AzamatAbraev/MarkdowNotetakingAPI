@@ -1,7 +1,6 @@
 package org.notetaking.markdownnotetakingapi.service;
 
-import org.notetaking.markdownnotetakingapi.exception.CustomNotFoundException;
-import org.notetaking.markdownnotetakingapi.model.FileData;
+import org.notetaking.markdownnotetakingapi.model.FileEntity;
 import org.notetaking.markdownnotetakingapi.repository.FileRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,16 +17,16 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-    public FileData saveFile(MultipartFile file) throws IOException {
-        FileData fileData = new FileData();
-        fileData.setFileName(file.getOriginalFilename());
-        fileData.setFileType(file.getContentType());
-        fileData.setFileData(file.getBytes());
+    public FileEntity saveFile(MultipartFile file) throws IOException {
+        FileEntity fileEntity = new FileEntity();
+        fileEntity.setFileName(file.getOriginalFilename());
+        fileEntity.setFileType(file.getContentType());
+        fileEntity.setFileData(file.getBytes());
 
-        return fileRepository.save(fileData);
+        return fileRepository.save(fileEntity);
     }
 
-    public Optional<FileData> downloadFile(Integer id) {
+    public Optional<FileEntity> downloadFile(Integer id) {
         return fileRepository.findById(id);
     }
 

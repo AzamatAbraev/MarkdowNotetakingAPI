@@ -2,8 +2,8 @@ package org.notetaking.markdownnotetakingapi.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.notetaking.markdownnotetakingapi.exception.CustomNotFoundException;
-import org.notetaking.markdownnotetakingapi.model.FileData;
-import org.notetaking.markdownnotetakingapi.model.FileApiResponse;
+import org.notetaking.markdownnotetakingapi.model.FileEntity;
+import org.notetaking.markdownnotetakingapi.model.ApiResponse;
 import org.notetaking.markdownnotetakingapi.service.FileService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,11 +27,11 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<FileApiResponse> uploadFile(
+    public ResponseEntity<ApiResponse> uploadFile(
             @RequestParam("file")MultipartFile file, HttpServletRequest request) throws IOException {
-        FileData savedFile = fileService.saveFile(file);
+        FileEntity savedFile = fileService.saveFile(file);
 
-        FileApiResponse response = new FileApiResponse();
+        ApiResponse response = new ApiResponse();
         response.setMessage("File uploaded successfully");
         response.setStatus(HttpStatus.CREATED);
         response.setCode(HttpStatus.CREATED.value());
@@ -43,7 +43,7 @@ public class FileController {
 
     @GetMapping("/download/{id}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable Integer id) {
-        Optional<FileData> file = fileService.downloadFile(id);
+        Optional<FileEntity> file = fileService.downloadFile(id);
 
         if (file.isEmpty()) {
             throw new CustomNotFoundException("File with id " + id + " is not found");
@@ -55,7 +55,7 @@ public class FileController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<FileApiResponse> deleteFile(@PathVariable Integer id, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse> deleteFile(@PathVariable Integer id, HttpServletRequest request) {
         if (!fileService.deleteFile(id)) {
             throw new CustomNotFoundException("File with id " + id + " is not found");
         }

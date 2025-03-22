@@ -1,7 +1,7 @@
 package org.notetaking.markdownnotetakingapi.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.notetaking.markdownnotetakingapi.model.FileApiResponse;
+import org.notetaking.markdownnotetakingapi.model.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<FileApiResponse> handleGenericException(Exception ex, HttpServletRequest request) {
-        FileApiResponse exception = new FileApiResponse();
+    public ResponseEntity<ApiResponse> handleGenericException(Exception ex, HttpServletRequest request) {
+        ApiResponse exception = new ApiResponse();
         exception.setMessage("Unexpected error: " + ex.getMessage());
         exception.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         exception.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -27,8 +27,8 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(IOException.class)
-    public ResponseEntity<FileApiResponse> handleIOException(IOException ex, HttpServletRequest request) {
-        FileApiResponse exception = new FileApiResponse();
+    public ResponseEntity<ApiResponse> handleIOException(IOException ex, HttpServletRequest request) {
+        ApiResponse exception = new ApiResponse();
         exception.setMessage("File upload failed");
         exception.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         exception.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
@@ -39,13 +39,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CustomNotFoundException.class)
-    public ResponseEntity<FileApiResponse> handleNotFoundException(CustomNotFoundException ex) {
-        FileApiResponse exception = new FileApiResponse();
+    public ResponseEntity<ApiResponse> handleNotFoundException(CustomNotFoundException ex, HttpServletRequest request) {
+        ApiResponse exception = new ApiResponse();
 
         exception.setStatus(HttpStatus.NOT_FOUND);
         exception.setCode(HttpStatus.NOT_FOUND.value());
         exception.setMessage(ex.getMessage());
         exception.setTimestamp(LocalDateTime.now());
+        exception.setPath(request.getRequestURI());
 
         return new ResponseEntity<>(exception, HttpStatus.NOT_FOUND);
     }

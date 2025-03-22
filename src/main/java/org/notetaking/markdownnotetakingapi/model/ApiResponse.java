@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileApiResponse {
+public class ApiResponse {
     private String message;
     private HttpStatus status;
     private int code;
