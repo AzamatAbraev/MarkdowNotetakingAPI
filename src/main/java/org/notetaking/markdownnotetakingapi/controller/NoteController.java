@@ -45,7 +45,7 @@ public class NoteController {
         return ResponseBuilder.build("Success", HttpStatus.OK, note.get(), request.getRequestURI());
     }
 
-    @GetMapping("/html/{id}")
+    @GetMapping("/{id}/html")
     public ResponseEntity<String> getNoteAsHtml(@PathVariable Integer id) {
         Optional<NoteEntity> note = noteService.getNoteById(id);
 
